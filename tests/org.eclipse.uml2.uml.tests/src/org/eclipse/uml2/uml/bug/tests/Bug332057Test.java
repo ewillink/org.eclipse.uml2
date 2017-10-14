@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014 CEA and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,6 @@ import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -31,11 +27,15 @@ import org.eclipse.uml2.common.util.CacheAdapter;
 import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.tests.util.StandaloneSupport;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
 /**
  * Tests concurrent access to the {@link CacheAdapter} from multiple threads.
  */
 public class Bug332057Test
-		extends TestCase {
+extends TestCase {
 
 	private static final boolean DEBUG = false;
 
@@ -52,7 +52,7 @@ public class Bug332057Test
 	private CountDownLatch latch;
 
 	private final Collection<Throwable> exceptions = Collections
-		.synchronizedCollection(new ArrayList<Throwable>());
+			.synchronizedCollection(new ArrayList<Throwable>());
 
 	public Bug332057Test() {
 		super();
@@ -96,9 +96,9 @@ public class Bug332057Test
 
 		try {
 			assertTrue("Deadlock occurred",
-				latch.await(TIMEOUT, TimeUnit.MINUTES));
+					latch.await(60 * TIMEOUT, TimeUnit.SECONDS));
 			assertTrue("Some thread failed with an exception.",
-				exceptions.isEmpty());
+					exceptions.isEmpty());
 		} catch (InterruptedException e) {
 			fail("Test interrupted");
 		}
@@ -115,13 +115,13 @@ public class Bug332057Test
 			} finally {
 				long elapsed = stats.sample();
 				System.out.printf("Finished in %d.%03d seconds.%n",
-					elapsed / 1000L, elapsed % 1000L);
+						elapsed / 1000L, elapsed % 1000L);
 				System.out.flush();
 			}
 		}
 
 		System.out.printf("Mean: %.2f seconds (std dev: %.2f seconds).%n",
-			stats.mean(), stats.stddev());
+				stats.mean(), stats.stddev());
 		System.out.flush();
 	}
 
@@ -161,19 +161,19 @@ public class Bug332057Test
 		for (int i = 1; i <= iterations; i++) {
 			if (DEBUG) {
 				System.out.printf(
-					"Thread \"%s\" loading UML metamodel, pass %d.%n", Thread
+						"Thread \"%s\" loading UML metamodel, pass %d.%n", Thread
 						.currentThread().getName(), i);
 			}
 
 			ResourceSet rset = createResourceSet();
 			Resource uml = rset.getResource(
-				URI.createURI(UMLResource.UML_METAMODEL_URI), true);
+					URI.createURI(UMLResource.UML_METAMODEL_URI), true);
 			EcoreUtil.resolveAll(uml);
 			destroyResourceSet(rset);
 
 			if (DEBUG) {
 				System.out.printf(
-					"Thread \"%s\" unloaded UML metamodel, pass %d.%n", Thread
+						"Thread \"%s\" unloaded UML metamodel, pass %d.%n", Thread
 						.currentThread().getName(), i);
 			}
 		}
@@ -225,7 +225,7 @@ public class Bug332057Test
 
 			// discard the first sample as it represents the cold state
 			if (warmedUp) {
-				samples[count++] = ((double) result) / 1000.0;
+				samples[count++] = (result) / 1000.0;
 			} else {
 				warmedUp = true;
 			}
@@ -240,7 +240,7 @@ public class Bug332057Test
 				result = result + samples[i];
 			}
 
-			result = result / ((double) count);
+			result = result / (count);
 
 			return result;
 		}
@@ -254,7 +254,7 @@ public class Bug332057Test
 				sumOfDevSqs = sumOfDevSqs + (dev * dev);
 			}
 
-			return Math.sqrt(sumOfDevSqs / ((double) (count - 1)));
+			return Math.sqrt(sumOfDevSqs / (count - 1));
 		}
 	}
 }
