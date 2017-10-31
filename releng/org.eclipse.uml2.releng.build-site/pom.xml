@@ -18,7 +18,10 @@
         <directory>.</directory>
         <filtering>true</filtering>
         <includes>
+          <include>downloads.sh</include>
+          <include>index.html</include>
           <include>publisher.properties</include>
+          <include>updates.sh</include>
         </includes>
       </resource>
     </resources>
