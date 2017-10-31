@@ -62,6 +62,8 @@
     <jacoco-maven-version>0.7.1.201405082137</jacoco-maven-version>
     <eclipse-jarsigner-version>1.1.2</eclipse-jarsigner-version>
     <maven-jxr-version>2.3</maven-jxr-version>
+    
+    <BUILD_ALIAS></BUILD_ALIAS>
   </properties>
   
   <modules>
@@ -179,24 +181,35 @@
           <version>${tycho-version}</version>
         </plugin>
         <plugin>
-           <groupId>org.eclipse.tycho</groupId>
-           <artifactId>tycho-packaging-plugin</artifactId>
-           <version>${tycho-version}</version>
-           <configuration>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-packaging-plugin</artifactId>
+          <version>${tycho-version}</version>
+          <configuration>
             <archive>
               <addMavenDescriptor>false</addMavenDescriptor>
             </archive>
-              <sourceReferences>
-                <generate>true</generate>
-              </sourceReferences>
-           </configuration>
-           <dependencies>
-              <dependency>
-                <groupId>org.eclipse.tycho.extras</groupId>
-                <artifactId>tycho-sourceref-jgit</artifactId>
-                <version>${tycho-extras-version}</version>
-              </dependency>
-           </dependencies>
+            <format>'v'yyyyMMdd'-'HHmm</format>
+            <sourceReferences>
+              <generate>true</generate>
+            </sourceReferences>
+            <timestampProvider>jgit</timestampProvider>
+            <jgit.ignore>
+              pom.xml
+              .polyglot.build.properties
+            </jgit.ignore>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.eclipse.tycho.extras</groupId>
+              <artifactId>tycho-sourceref-jgit</artifactId>
+              <version>${tycho-extras-version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.eclipse.tycho.extras</groupId>
+              <artifactId>tycho-buildtimestamp-jgit</artifactId>
+              <version>${tycho-extras-version}</version>
+            </dependency>
+          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
@@ -360,7 +373,7 @@
             <sourceFileIncludes>
               <sourceFileInclude>org/eclipse/m2m/qvt/oml/**/*.java</sourceFileInclude>
             </sourceFileIncludes>
-            <doctitle>uml2 Interim API</doctitle>
+            <doctitle>UML2 Interim API</doctitle>
           </configuration>
         </plugin-->
       </plugins>
@@ -374,6 +387,9 @@
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
+      <properties>
+        <BUILD_T>N</BUILD_T>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -398,6 +414,9 @@
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
+      <properties>
+        <BUILD_T>I</BUILD_T>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -422,6 +441,9 @@
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
+      <properties>
+        <BUILD_T>S</BUILD_T>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -446,6 +468,9 @@
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
+      <properties>
+        <BUILD_T></BUILD_T>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -470,6 +495,9 @@
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
+      <properties>
+        <BUILD_T></BUILD_T>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -531,6 +559,7 @@
                 <goals>
                   <goal>pack</goal>
                 </goals>
+                <phase>package</phase>
               </execution>
             </executions>
           </plugin>
@@ -543,7 +572,7 @@
                 <goals>
                   <goal>p2-metadata</goal>
                 </goals>
-                <phase>package</phase>
+                <phase>verify</phase>
               </execution>
             </executions>
             <configuration>
